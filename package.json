@@ -7,7 +7,7 @@
 		"start": "node ./bin/server.js",
 		"dev": "nodemon ./bin/server.js",
 		"pull": "git pull origin main && npm install",
-		"push": "git status && git add . && git commit -m 'fix:_Update_models_controllers' && git push origin main",
+		"push": "git status && git add . && git commit -m 'fix:_Add_models' && git push origin main",
 		"generate-key": "node -e \"console.log(require('crypto').randomBytes(32).toString('hex'))\""
 	},
 	"keywords": [],

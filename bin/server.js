@@ -7,7 +7,7 @@ app.set('port', port);
 
 const server = http.createServer(app);
 
-server.listen(port);
+server.listen("0.0.0.0", port);
 server.on('error', onError);
 server.on('listening', onListening);
 console.log('Rodando na porta:' + port);
