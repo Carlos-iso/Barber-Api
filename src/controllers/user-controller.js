@@ -2,7 +2,7 @@
 
 const ValidationContract = require("../validators/fluent-validator");
 const repository = require("../repositories/user-repository");
-const md5 = require("md5");
+const bcryptjs = require("bcryptjs");
 const authService = require("../services/auth-service");
 
 exports.get = async (req, res, next) => {
@@ -56,10 +56,12 @@ exports.post = async (req, res, next) => {
 			});
 			return;
 		};
+		const salt = bcryptjs.genSaltSync(10);
+		const hash = bcryptjs.hash(req.body.password, salt);
 		await repository.create({
 			name: req.body.name,
 			email: req.body.email,
-			password: md5(`${req.body.password}-${global.SALT_KEY}`),
+			password: hash,
 		});
 		res.status(201).send({
 			message: "Cadastro Bem Sucedido!",
@@ -90,7 +92,7 @@ exports.authenticate = async (req, res, next) => {
 	try {
 		const user = await repository.authenticate({
 			email: req.body.email,
-			password: md5(`${req.body.password}-${global.SALT_KEY}`),
+			password: req.body.password,
 		});
 
 		if (!user) {

@@ -2,6 +2,7 @@
 
 const mongoose = require("mongoose");
 const User = mongoose.model("User");
+const bcryptjs = require("bcryptjs");
 
 exports.get = async () => {
   const res = await User.find({}, "name email");
@@ -24,11 +25,12 @@ exports.create = async (data) => {
 };
 
 exports.authenticate = async (data) => {
-  const res = await User.findOne({
-    email: data.email,
-    password: data.password,
-  });
-  return res;
+	const user = await User.findOne({
+		email: data.email
+	});
+	if (!user) return "Usuário Não Encontrado!";
+	const isValidPassword = await bcryptjs.compare(data.password, user.password);
+	return isValidPassword ? user : "Senha Inválida!";
 };
 
 exports.update = async (id, data) => {
