@@ -17,7 +17,6 @@ const schema = new Schema({
 	password: {
 		type: String,
 		required: [true, 'A senha é necessária'],
-		select: false
 	},
 	role: {
 		type: String,

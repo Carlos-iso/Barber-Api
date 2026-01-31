@@ -12,7 +12,6 @@ server.listen(port, "0.0.0.0", () => {
 });
 server.on('error', onError);
 server.on('listening', onListening);
-console.log('Rodando na porta:' + port);
 
 function portSelect(val){
     const port = parseInt(val, 10);

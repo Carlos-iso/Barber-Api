@@ -56,8 +56,8 @@ exports.post = async (req, res, next) => {
 			});
 			return;
 		};
-		const salt = bcryptjs.genSaltSync(10);
-		const hash = bcryptjs.hash(req.body.password, salt);
+		const salt = await bcryptjs.genSaltSync(10);
+		const hash = await bcryptjs.hash(req.body.password, salt);
 		await repository.create({
 			name: req.body.name,
 			email: req.body.email,
@@ -82,6 +82,7 @@ exports.authenticate = async (req, res, next) => {
 		8,
 		"A Senha Deve Conter Pelo Manos 8 Caracteres"
 	);
+	console.log("AQUI");
 
 	//Se os dados forem inválidos
 	if (!contract.isValid()) {
