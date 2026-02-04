@@ -42,6 +42,6 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use("/", indexRoute);
-app.use("/account", userRoute);
+app.use("/user", userRoute);
 
 module.exports = app;
