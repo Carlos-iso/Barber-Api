@@ -1,7 +1,7 @@
 'use strict';
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const BaseOptionSchema = require('./');
+const BaseOptionSchema = require('./base-option-schema');
 
 const StyleSchema = new Schema({
 	type: {

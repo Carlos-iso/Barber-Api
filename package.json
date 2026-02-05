@@ -7,13 +7,15 @@
 		"start": "node ./bin/server.js",
 		"dev": "nodemon ./bin/server.js",
 		"pull": "git pull origin main && npm install",
-		"push": "git status && git add . && git commit -m 'fix:_Run_Run_API' && git push origin main",
+		"push": "git status && git add . && git commit -m 'fix:_init_r2' && git push origin main",
 		"generate-key": "node -e \"console.log(require('crypto').randomBytes(32).toString('hex'))\""
 	},
 	"keywords": [],
 	"author": "CarlosCoding",
 	"license": "ISC",
 	"dependencies": {
+		"@aws-sdk/client-s3": "^3.983.0",
+		"@aws-sdk/s3-request-presigner": "^3.983.0",
 		"bcryptjs": "^3.0.3",
 		"body-parser": "^1.20.2",
 		"cors": "^2.8.5",
@@ -23,6 +25,7 @@
 		"guid": "^0.0.12",
 		"http": "^0.0.1-security",
 		"jsonwebtoken": "^9.0.3",
+		"mediainfo.js": "^0.3.7",
 		"mongoose": "^7.0.1"
 	},
 	"devDependencies": {

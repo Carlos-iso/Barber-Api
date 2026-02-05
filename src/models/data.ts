@@ -1,15 +1,4 @@
-import { HaircutStyle, BeardStyle } from '@/types/barber';
-import teste from '@/images/teste.jpeg';
-import teste2 from '@/images/teste2.jpeg';
-
 export const haircutStyles: HaircutStyle[] = [
-  {
-    id: 'fade',
-    name: 'Degradê',
-    icon: 'TrendingDown',
-    description: 'Corte com transição suave',
-    defaultImage: '/images/haircuts/fade.jpg',
-  },
   {
     id: 'social',
     name: 'Social',
@@ -18,56 +7,21 @@ export const haircutStyles: HaircutStyle[] = [
     defaultImage: '/images/haircuts/social.jpg',
   },
   {
-    id: 'undercut',
-    name: 'Undercut',
-    icon: 'Layers',
-    description: 'Laterais raspadas, topo longo',
-    defaultImage: '/images/haircuts/undercut.jpg',
-  },
-  {
-    id: 'buzz',
-    name: 'Máquina Zero',
-    icon: 'Zap',
-    description: 'Corte rente uniforme',
-    defaultImage: '/images/haircuts/buzz.jpg',
-  },
-  {
-    id: 'pompadour',
-    name: 'Pompadour',
-    icon: 'Crown',
-    description: 'Volume no topo',
-    defaultImage: '/images/haircuts/pompadour.jpg',
-  },
-  {
-    id: 'crew',
-    name: 'Crew Cut',
-    icon: 'Shield',
-    description: 'Corte militar moderno',
-    defaultImage: '/images/haircuts/crew.jpg',
+    id: 'fade',
+    name: 'Degradê',
+    icon: 'TrendingDown',
+    description: 'Corte com transição suave',
+    defaultImage: '/images/haircuts/fade.jpg',
   },
 ];
 
 export const beardStyles: BeardStyle[] = [
   {
-    id: 'full',
-    name: 'Barba Cheia',
-    icon: 'Square',
-    description: 'Barba completa e volumosa',
+    id: 'social',
+    name: 'Barba Social',
+    icon: 'User',
+    description: 'Barba alinhada e clássica',
     defaultImage: '/images/beards/full.jpg',
-  },
-  {
-    id: 'designed',
-    name: 'Desenhada',
-    icon: 'PenTool',
-    description: 'Contornos bem definidos',
-    defaultImage: '/images/beards/designed.jpg',
-  },
-  {
-    id: 'goatee',
-    name: 'Cavanhaque',
-    icon: 'Triangle',
-    description: 'Apenas queixo e bigode',
-    defaultImage: '/images/beards/goatee.jpg',
   },
   {
     id: 'fade-beard',
@@ -77,59 +31,65 @@ export const beardStyles: BeardStyle[] = [
     defaultImage: '/images/beards/fade-beard.jpg',
   },
   {
-    id: 'stubble',
-    name: 'Por Fazer',
-    icon: 'Minus',
-    description: 'Barba curta e rente',
-    defaultImage: '/images/beards/stubble.jpg',
-  },
-  {
     id: 'clean',
     name: 'Limpa',
     icon: 'Sparkles',
     description: 'Rosto completamente liso',
     defaultImage: '/images/beards/clean.jpg',
   },
+  {
+    id: 'goatee',
+    name: 'Cavanhaque',
+    icon: 'Triangle',
+    description: 'Apenas queixo e bigode',
+    defaultImage: '/images/beards/goatee.jpg',
+  },
 ];
 
 export const cuttingMethods = [
   { id: 'scissors', label: 'Tesoura', icon: 'Scissors', backgroundImage: teste },
-  { id: 'machine', label: 'Máquina', icon: 'Zap', backgroundImage: teste2},
+  { id: 'machine', label: 'Máquina', icon: 'Zap', backgroundImage: teste2 },
 ] as const;
 
 export const machineHeights = [
-  { id: '0.5', label: '0.5', icon: 'Ruler' },
-  { id: '1.0', label: '1.0', icon: 'Ruler' },
-  { id: '1.5', label: '1.5', icon: 'Ruler' },
-  { id: '2', label: '2', icon: 'Ruler' },
-  { id: '3', label: '3', icon: 'Ruler' },
-  { id: '4', label: '4', icon: 'Ruler' },
+  { id: '0.5', label: '0.5', icon: 'Ruler', defaultImage: '/images/options/m-05.jpg' },
+  { id: '1.0', label: '1.0', icon: 'Ruler', defaultImage: '/images/options/m-10.jpg' },
+  { id: '1.5', label: '1.5', icon: 'Ruler', defaultImage: '/images/options/m-15.jpg' },
+  { id: '2', label: '2', icon: 'Ruler', defaultImage: '/images/options/m-20.jpg' },
+  { id: '3', label: '3', icon: 'Ruler', defaultImage: '/images/options/m-30.jpg' },
+  { id: '4', label: '4', icon: 'Ruler', defaultImage: '/images/options/m-40.jpg' },
+] as const;
+
+export const scissorHeights = [
+  { id: 'high', label: 'Alto', icon: 'ArrowUp', defaultImage: '/images/options/s-high.jpg' },
+  { id: 'medium', label: 'Médio', icon: 'Minus', defaultImage: '/images/options/s-medium.jpg' },
+  { id: 'low', label: 'Baixo', icon: 'ArrowDown', defaultImage: '/images/options/s-low.jpg' },
 ] as const;
 
 export const sideStyles = [
-  { id: 'fade', label: 'Degradê', icon: 'TrendingDown' },
-  { id: 'straight', label: 'Reto', icon: 'Minus' },
-  { id: 'razor', label: 'Navalhado', icon: 'Slash' },
+  { id: 'zero', label: '0', icon: 'Circle', defaultImage: '/images/options/side-zero.jpg' },
+  { id: 'zero_half', label: '0.5', icon: 'Disc', defaultImage: '/images/options/side-05.jpg' },
+  { id: 'razor', label: 'Navalhado', icon: 'Slash', defaultImage: '/images/options/side-razor.jpg' },
 ] as const;
 
 export const fadeTypes = [
-  { id: 'high', label: 'High Fade', icon: 'ArrowUp', description: 'Degradê alto' },
-  { id: 'mid', label: 'Mid Fade', icon: 'Minus', description: 'Degradê médio' },
-  { id: 'low', label: 'Low Fade', icon: 'ArrowDown', description: 'Degradê baixo' },
+  { id: 'high', label: 'High Fade', icon: 'ArrowUp', description: 'Degradê alto', defaultImage: '/images/options/fade-high.jpg' },
+  { id: 'mid', label: 'Mid Fade', icon: 'Minus', description: 'Degradê médio', defaultImage: '/images/options/fade-mid.jpg' },
+  { id: 'low', label: 'Low Fade', icon: 'ArrowDown', description: 'Degradê baixo', defaultImage: '/images/options/fade-low.jpg' },
 ] as const;
 
 export const finishStyles = [
-  { id: 'natural', label: 'Natural', icon: 'Leaf' },
-  { id: 'defined', label: 'Marcado', icon: 'Target' },
+  { id: 'natural', label: 'Natural', icon: 'Leaf', defaultImage: '/images/options/finish-natural.jpg' },
+  { id: 'defined', label: 'Marcado', icon: 'Target', defaultImage: '/images/options/finish-defined.jpg' },
 ] as const;
 
 export const beardHeights = [
-  { id: 'short', label: 'Curta', icon: 'Minus' },
-  { id: 'medium', label: 'Média', icon: 'Equal' },
-  { id: 'long', label: 'Longa', icon: 'Menu' },
+  { id: 'short', label: 'Curta', icon: 'Minus', defaultImage: '/images/options/bh-short.jpg' },
+  { id: 'medium', label: 'Média', icon: 'Equal', defaultImage: '/images/options/bh-medium.jpg' },
+  { id: 'long', label: 'Longa', icon: 'Menu', defaultImage: '/images/options/bh-long.jpg' },
 ] as const;
 
 export const beardContours = [
-  { id: 'natural', label: 'Natural', icon: 'Leaf' },
-  { id: 'defined', label: 'Marcado', icon: 'Target' },
+  { id: 'natural', label: 'Natural', icon: 'Leaf', defaultImage: '/images/options/bc-natural.jpg' },
+  { id: 'defined', label: 'Marcado', icon: 'Target', defaultImage: '/images/options/bc-defined.jpg' },
 ] as const;
