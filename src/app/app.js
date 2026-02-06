@@ -19,6 +19,7 @@ const User = require('../models/user');
 //Carregar Rotas
 const indexRoute = require('../routes/index-route');
 const userRoute = require('../routes/user-route');
+const uploadRoute = require('../routes/haircut-beard-routes')
 
 //Chama As Variaveis De Ambiente
 const urlHome = process.env.URL_HOME;
@@ -26,7 +27,7 @@ const urlLogin = process.env.URL_LOGIN;
 const urlCadastro = process.env.URL_CADASTRO;
 
 // Habilita O CORS
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
 	res.header('Access-Control-Allow-Origin', "*");
 	res.header('Access-Control-Allow-Headers', '*Origen, X-Requested-With, Content-Type, Accept, x-access-token');
 	res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH, HEAD');
@@ -43,5 +44,6 @@ app.use(bodyParser.urlencoded({
 
 app.use("/", indexRoute);
 app.use("/user", userRoute);
+app.use("/upload", uploadRoute)
 
 module.exports = app;

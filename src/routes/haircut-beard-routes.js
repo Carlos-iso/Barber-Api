@@ -7,9 +7,9 @@ const authService = require("../services/auth-service.js"); // Apenas usuários 
 router.get("/", controller.listUploads);
 router.post("/search", controller.getByName);
 router.post(
-  "/:adminId/new",
-  upload.single("media"),
-  controller.uploadFile
+	"/:adminId/new",
+	upload.single("defaultImage"),
+	controller.uploadFile
 );
 // router.put("/:id/update", upload.single("media"), controller.updatePut);
 // router.delete("/:id/delete", controller.remove);
