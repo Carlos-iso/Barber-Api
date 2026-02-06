@@ -30,6 +30,7 @@ exports.uploadFile = async (req, res) => {
         }
         type = `${track["@type"]}/${track.Format}`;
         const upload = {
+            user: req.params.adminId,
             id: req.body.id,
             name: req.body.name,
             description: req.body.description,

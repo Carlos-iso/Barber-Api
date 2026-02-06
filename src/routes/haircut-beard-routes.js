@@ -7,12 +7,10 @@ const authService = require("../services/auth-service.js"); // Apenas usuários 
 router.get("/", controller.listUploads);
 router.post("/search", controller.getByName);
 router.post(
-  "/:advertiserId/new",
+  "/:adminId/new",
   upload.single("media"),
-  controller.createAds
+  controller.uploadFile
 );
-router.put("/:id/update", upload.single("media"), controller.updatePut);
-router.delete("/:id/delete", controller.remove);
-// router.post("/:driverId/start", controller.startAdsForDriver);
-router.post("/:driverId/stop", controller.stopAdsForDriver);
+// router.put("/:id/update", upload.single("media"), controller.updatePut);
+// router.delete("/:id/delete", controller.remove);
 module.exports = router;
