@@ -4,18 +4,18 @@ const mongoose = require("mongoose");
 const HaircutBeardStyle = mongoose.model("HaircutBeardStyle");
 
 exports.get = async () => {
-    const style = await HaircutBeardStyle.find({}, "id name icon description defaultImage");
-    return style;
+    const haircutBeard = await HaircutBeardStyle.find({}, "id name icon description defaultImage");
+    return haircutBeard;
 };
 
 exports.getByName = async (name) => {
-    const style = await HaircutBeardStyle.findOne({ name });
-    return style;
+    const haircutBeard = await HaircutBeardStyle.findOne({ name });
+    return haircutBeard;
 };
 
 exports.create = async (data) => {
-    var style = await new HaircutBeardStyle(data);
-    await style.save();
+    var haircutBeard = await new HaircutBeardStyle(data);
+    await haircutBeard.save();
 };
 
 exports.update = async (id, data) => {

@@ -19,9 +19,19 @@ const schema = new Schema({
         required: [true, 'O descrição é necessário'],
     },
     defaultImage: {
-        type: String,
-        required: [true, 'Uma Imagem é necessário'],
-        match: [/^https?:\/\/[^\s$.?#].[^\s]*$/, "URL inválida"],
+        url: {
+            type: String,
+            required: [true, "Necessário Uma URL Váida!"],
+            match: [/^https?:\/\/[^\s$.?#].[^\s]*$/, "URL inválida"],
+        },
+        type: {
+            type: String,
+            required: [true, "Necessário Especificar O Tipo!"],
+        },
+        key: {
+            type: String,
+            required: [true, "Necessário uma chave de local de arquivo"]
+        },
     },
 });
 module.exports = mongoose.model("HaircutBeardStyle", schema);

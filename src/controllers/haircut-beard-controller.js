@@ -6,8 +6,8 @@ const {
     sanitizeFileName,
 } = require("../services/upload-service.js");
 const repository = require("../repositories/haircut-beard-repository.js");
-// Criar novo anúncio
-exports.createAds = async (req, res) => {
+// Criar uploand file
+exports.uploadFile = async (req, res) => {
     try {
         if (!req.file) {
             return res
@@ -29,22 +29,49 @@ exports.createAds = async (req, res) => {
                 .send({ message: "Não foi possível identificar tipo de mídia" });
         }
         type = `${track["@type"]}/${track.Format}`;
-        const ad = {
-            enterprise: req.params.advertiserId,
-            titleAd: req.body.titleAd,
-            descriptionAd: req.body.descriptionAd,
-            media: {
+        const upload = {
+            id: req.body.id,
+            name: req.body.name,
+            description: req.body.description,
+            icon: req.body.icon,
+            defaultImage: {
                 url: url,
                 type: type,
                 key: key,
-                duration: durarion,
             },
         };
-        await repository.create(ad);
-        res.status(201).send({ message: "Anúncio criado!", ad });
+        await repository.create(upload);
+        res.status(201).send({ message: "Anúncio criado!", upload });
     } catch (err) {
         res
             .status(400)
             .send({ message: "Erro ao criar anúncio", details: err.message });
     }
 };
+// Lista apenas metadodos dos uploads
+exports.listUploads = async (req, res) => {
+    try {
+        var data = await repository.get();
+        res.status(200).send(data);
+    } catch (err) {
+        res
+            .status(500)
+            .send({ message: "Erro ao buscar anúncios", details: err.message });
+    }
+};
+
+// Buscar por nome uploads
+exports.getByName = async (req, res) => {
+    try {
+        const idUpload = await repository.getByName(req.body.name);
+        if (idUpload == null) {
+            return res.status(404).send({ message: "Anúncio não encontrado!" });
+        }
+        return res.status(200).send({ message: "ID encontrado!", idUpload });
+    } catch (err) {
+        return res
+            .status(409)
+            .send({ message: "Erro inesperado", details: err.message });
+        // rever mensagem de erro
+    }
+}
