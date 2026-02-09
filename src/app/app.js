@@ -15,11 +15,14 @@ mongoose.connect(config.connectionString);
 
 //Carregar models
 const User = require('../models/user');
+const HaircutStyle = require('../models/haircut-style');
+const BeardStyle = require('../models/beard-style');
 
 //Carregar Rotas
 const indexRoute = require('../routes/index-route');
 const userRoute = require('../routes/user-route');
-const uploadRoute = require('../routes/haircut-beard-routes')
+const haircutRoute = require('../routes/haircut-routes');
+const beardRoute = require('../routes/beard-routes');
 
 //Chama As Variaveis De Ambiente
 const urlHome = process.env.URL_HOME;
@@ -44,6 +47,7 @@ app.use(bodyParser.urlencoded({
 
 app.use("/", indexRoute);
 app.use("/user", userRoute);
-app.use("/upload", uploadRoute)
+app.use("/haircut", haircutRoute)
+app.use("/beard", beardRoute)
 
 module.exports = app;
