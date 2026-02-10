@@ -1,3 +1,4 @@
+/*
 export const haircutStyles: HaircutStyle[] = [
   {
     id: 'social',
@@ -45,6 +46,7 @@ export const beardStyles: BeardStyle[] = [
     defaultImage: '/images/beards/goatee.jpg',
   },
 ];
+*/
 
 export const cuttingMethods = [
   { id: 'scissors', label: 'Tesoura', icon: 'Scissors', backgroundImage: teste },

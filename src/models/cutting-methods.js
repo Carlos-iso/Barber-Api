@@ -1,0 +1,33 @@
+'use strict';
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const schema = new Schema({
+    id: {
+        type: String,
+        required: [true, 'O ID é necessário'],
+    },
+    label: {
+        type: String,
+        required: [true, 'O Label é necessário'],
+    },
+    icon: {
+        type: String,
+        required: [true, 'O ícone é necessário'],
+    },
+    backgroundImage: {
+        url: {
+            type: String,
+            required: [true, "Necessário Uma URL Váida!"],
+            match: [/^https?:\/\/[^\s$.?#].[^\s]*$/, "URL inválida"],
+        },
+        type: {
+            type: String,
+            required: [true, "Necessário Especificar O Tipo!"],
+        },
+        key: {
+            type: String,
+            required: [true, "Necessário uma chave de local de arquivo"]
+        },
+    },
+});
+module.exports = mongoose.model("CuttingMethods", schema);
