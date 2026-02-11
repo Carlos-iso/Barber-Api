@@ -17,10 +17,10 @@ exports.uploadFile = async (req, res) => {
 		const { key, url, bucket } = await uploadToR2(req.file);
 		const videoInfo = await getVideoMetadata(req.file.buffer);
 		const track = videoInfo.media?.track?.find(
-			(t) => t["@type"] === "Video" || t["@type"] === "Image"
+			(t) => t["@type"] === "Video" || t["@type"] === "Image",
 		);
 		const durarion = videoInfo.media?.track?.find(
-			(t) => t["@type"] === "General"
+			(t) => t["@type"] === "General",
 		).Duration;
 		if (!track) {
 			res
@@ -47,10 +47,57 @@ exports.uploadFile = async (req, res) => {
 			.send({ message: "Erro ao criar upload", details: err.message });
 	}
 };
+const authService = require("../services/auth-service");
+const { generateMediaUrl } = require("../services/r2");
+
 // Lista apenas metadodos dos uploads
 exports.listUploads = async (req, res) => {
 	try {
 		var data = await repository.get();
+
+		// Check for token to decide if we verify/sign URLs
+		const token =
+			req.body.token || req.query.token || req.headers["x-access-token"];
+
+		if (token) {
+			try {
+				await authService.decodeToken(token); // Verify token validity
+
+				// If we get here, token is valid. Generate signed URLs.
+				// Note: repository.get() returns Mongoose documents. We might need to convert to object to modify safely,
+				// or modify the document if allowed. safely is to map to object.
+				// But mongoose find() usually returns Model instances.
+				// Let's rely on mapping.
+
+				const dataWithSignedUrls = await Promise.all(
+					data.map(async (item) => {
+						const itemObj = item.toObject ? item.toObject() : item; // Ensure plain object
+						if (itemObj.defaultImage && itemObj.defaultImage.key) {
+							try {
+								const signedUrl = await generateMediaUrl(
+									itemObj.defaultImage.key,
+									60,
+								); // 60 minutes
+								itemObj.defaultImage.url = signedUrl;
+							} catch (err) {
+								console.error(
+									`Error signing URL for item ${itemObj._id}:`,
+									err,
+								);
+								// Keep original URL on error
+							}
+						}
+						return itemObj;
+					}),
+				);
+
+				return res.status(200).send(dataWithSignedUrls);
+			} catch (e) {
+				// Token invalid or expired - return public URLs (original data)
+				// console.log("Invalid token for signed URLs, returning public");
+			}
+		}
+
 		res.status(200).send(data);
 	} catch (err) {
 		res
@@ -73,4 +120,4 @@ exports.getByName = async (req, res) => {
 			.send({ message: "Erro inesperado", details: err.message });
 		// rever mensagem de erro
 	}
-}
+};
