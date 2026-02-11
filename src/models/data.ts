@@ -28,7 +28,7 @@ export const beardStyles: BeardStyle[] = [
     id: 'fade-beard',
     name: 'Degradê',
     icon: 'TrendingDown',
-    description: 'Transição suave do cabelo',
+    description: 'Transição su{ id: '0.5', label: '0.5', icon: 'Ruler', defaultImage: '/images/options/m-05.jpg' },ave do cabelo',
     defaultImage: '/images/beards/fade-beard.jpg',
   },
   {
@@ -46,7 +46,6 @@ export const beardStyles: BeardStyle[] = [
     defaultImage: '/images/beards/goatee.jpg',
   },
 ];
-*/
 
 export const cuttingMethods = [
   { id: 'scissors', label: 'Tesoura', icon: 'Scissors', backgroundImage: teste },
@@ -54,7 +53,7 @@ export const cuttingMethods = [
 ] as const;
 
 export const machineHeights = [
-  { id: '0.5', label: '0.5', icon: 'Ruler', defaultImage: '/images/options/m-05.jpg' },
+  
   { id: '1.0', label: '1.0', icon: 'Ruler', defaultImage: '/images/options/m-10.jpg' },
   { id: '1.5', label: '1.5', icon: 'Ruler', defaultImage: '/images/options/m-15.jpg' },
   { id: '2', label: '2', icon: 'Ruler', defaultImage: '/images/options/m-20.jpg' },
@@ -74,12 +73,6 @@ export const sideStyles = [
   { id: 'razor', label: 'Navalhado', icon: 'Slash', defaultImage: '/images/options/side-razor.jpg' },
 ] as const;
 
-export const fadeTypes = [
-  { id: 'high', label: 'High Fade', icon: 'ArrowUp', description: 'Degradê alto', defaultImage: '/images/options/fade-high.jpg' },
-  { id: 'mid', label: 'Mid Fade', icon: 'Minus', description: 'Degradê médio', defaultImage: '/images/options/fade-mid.jpg' },
-  { id: 'low', label: 'Low Fade', icon: 'ArrowDown', description: 'Degradê baixo', defaultImage: '/images/options/fade-low.jpg' },
-] as const;
-
 export const finishStyles = [
   { id: 'natural', label: 'Natural', icon: 'Leaf', defaultImage: '/images/options/finish-natural.jpg' },
   { id: 'defined', label: 'Marcado', icon: 'Target', defaultImage: '/images/options/finish-defined.jpg' },
@@ -95,3 +88,10 @@ export const beardContours = [
   { id: 'natural', label: 'Natural', icon: 'Leaf', defaultImage: '/images/options/bc-natural.jpg' },
   { id: 'defined', label: 'Marcado', icon: 'Target', defaultImage: '/images/options/bc-defined.jpg' },
 ] as const;
+
+export const fadeTypes = [
+  { id: 'high', label: 'High Fade', icon: 'ArrowUp', description: 'Degradê alto', defaultImage: '/images/options/fade-high.jpg' },
+  { id: 'mid', label: 'Mid Fade', icon: 'Minus', description: 'Degradê médio', defaultImage: '/images/options/fade-mid.jpg' },
+  { id: 'low', label: 'Low Fade', icon: 'ArrowDown', description: 'Degradê baixo', defaultImage: '/images/options/fade-low.jpg' },
+] as const;
+*/

@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const BeardStyle = mongoose.model("BeardStyle");
 
 exports.get = async () => {
-    const beard = await BeardStyle.find({}, "id name icon description defaultImage");
+    const beard = await BeardStyle.find({}, "user id name icon description defaultImage");
     return beard;
 };
 

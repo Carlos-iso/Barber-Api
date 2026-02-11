@@ -4,7 +4,7 @@ const {
 	uploadToR2,
 	sanitizeFileName,
 } = require("../services/upload-service.js");
-const repository = require("../repositories/cutting-methods-repository.js");
+const repository = require("../repositories/fade-types-repository.js");
 // Criar uploand file
 exports.uploadFile = async (req, res) => {
 	try {
@@ -31,9 +31,10 @@ exports.uploadFile = async (req, res) => {
 		const upload = {
 			user: req.params.adminId,
 			id: req.body.id,
-			label: req.body.name,
+			label: req.body.label,
+			description: req.body.description,
 			icon: req.body.icon,
-			backgroundImage: {
+			defaultImage: {
 				url: url,
 				type: type,
 				key: key,

@@ -17,12 +17,28 @@ mongoose.connect(config.connectionString);
 const User = require('../models/user');
 const HaircutStyle = require('../models/haircut-style');
 const BeardStyle = require('../models/beard-style');
+const CuttingMethods = require('../models/cutting-methods');
+const MachineHeights = require('../models/machine-heights');
+const ScissorHeights = require('../models/scissor-heights');
+const SideStyles = require('../models/side-styles');
+const FinishStyles = require('../models/finish-styles');
+const BeardHeights = require('../models/beard-heights');
+const BeardContours = require('../models/beard-contours');
+const FadeTypes = require('../models/fade-types');
 
 //Carregar Rotas
-const indexRoute = require('../routes/index-route');
-const userRoute = require('../routes/user-route');
-const haircutRoute = require('../routes/haircut-routes');
-const beardRoute = require('../routes/beard-routes');
+const indexRoutes = require('../routes/index-routes');
+const userRoutes = require('../routes/user-routes');
+const haircutRoutes = require('../routes/haircut-routes');
+const beardRoutes = require('../routes/beard-routes');
+const cuttingMethodsRoutes = require('../routes/cutting-methods-routes');
+const machineHeightsRoutes = require('../routes/machine-heights-routes');
+const scissorHeightsRoutes = require('../routes/scissor-heights-routes');
+const sideStylesRoutes = require('../routes/side-styles-routes');
+const finishStylesRoutes = require('../routes/finish-styles-routes');
+const beardHeightsRoutes = require('../routes/beard-heights-routes');
+const beardContoursRoutes = require('../routes/beard-contours-routes');
+const fadeTypesRoutes = require('../routes/fade-types-routes');
 
 //Chama As Variaveis De Ambiente
 const urlHome = process.env.URL_HOME;
@@ -45,9 +61,17 @@ app.use(bodyParser.urlencoded({
 	extended: false
 }));
 
-app.use("/", indexRoute);
-app.use("/user", userRoute);
-app.use("/haircut", haircutRoute)
-app.use("/beard", beardRoute)
+app.use("/", indexRoutes);
+app.use("/user", userRoutes);
+app.use("/haircut", haircutRoutes);
+app.use("/beard", beardRoutes);
+app.use("/cutting-methods", cuttingMethodsRoutes);
+app.use("/machine-heights", machineHeightsRoutes);
+app.use("/scissor-heights", scissorHeightsRoutes);
+app.use("/side-styles", sideStylesRoutes);
+app.use("/finish-styles", finishStylesRoutes);
+app.use("/beard-heights", beardHeightsRoutes);
+app.use("/beard-contours", beardContoursRoutes);
+app.use("/fade-types", fadeTypesRoutes);
 
 module.exports = app;

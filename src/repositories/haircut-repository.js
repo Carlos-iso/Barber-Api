@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const HaircutStyle = mongoose.model("HaircutStyle");
 
 exports.get = async () => {
-    const haircut = await HaircutStyle.find({}, "id name icon description defaultImage");
+    const haircut = await HaircutStyle.find({}, "user id name icon description defaultImage");
     return haircut;
 };
 

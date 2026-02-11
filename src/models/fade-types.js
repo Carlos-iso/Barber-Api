@@ -19,7 +19,11 @@ const schema = new Schema({
         type: String,
         required: [true, 'O ícone é necessário'],
     },
-    backgroundImage: {
+    description: {
+        type: String,
+        required: [true, 'O descrição é necessário'],
+    },
+    defaultImage: {
         url: {
             type: String,
             required: [true, "Necessário Uma URL Váida!"],
@@ -35,4 +39,4 @@ const schema = new Schema({
         },
     },
 });
-module.exports = mongoose.model("CuttingMethods", schema);
+module.exports = mongoose.model("FadeTypes", schema);

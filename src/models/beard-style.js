@@ -2,6 +2,11 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const schema = new Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: [true, "Necessário Vinculo Ao Admin"],
+    },
     id: {
         type: String,
         required: [true, 'O ID é necessário'],

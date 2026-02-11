@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const CuttingMethods = mongoose.model("CuttingMethods");
 
 exports.get = async () => {
-    const cuttingMethods = await CuttingMethods.find({}, "id label icon backgroundImage");
+    const cuttingMethods = await CuttingMethods.find({}, "user id label icon backgroundImage");
     return cuttingMethods;
 };
 
