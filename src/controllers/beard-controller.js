@@ -4,7 +4,7 @@ const {
 	uploadToR2,
 	sanitizeFileName,
 } = require("../services/upload-service.js");
-const repository = require("../repositories/haircut-repository.js");
+const repository = require("../repositories/beard-repository.js");
 // Criar uploand file
 exports.uploadFile = async (req, res) => {
 	try {

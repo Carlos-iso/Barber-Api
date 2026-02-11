@@ -31,7 +31,7 @@ exports.uploadFile = async (req, res) => {
 		const upload = {
 			user: req.params.adminId,
 			id: req.body.id,
-			label: req.body.name,
+			label: req.body.label,
 			icon: req.body.icon,
 			defaultImage: {
 				url: url,
