@@ -4,6 +4,7 @@ const ValidationContract = require("../validators/fluent-validator");
 const repository = require("../repositories/user-repository");
 const bcryptjs = require("bcryptjs");
 const authService = require("../services/auth-service");
+const { uploadToR2, deleteFromR2 } = require("../services/upload-service");
 
 exports.get = async (req, res, next) => {
 	try {
@@ -32,45 +33,57 @@ exports.post = async (req, res, next) => {
 	contract.hasMinLen(
 		req.body.name,
 		3,
-		"O Nome Deve Conter Pelo Manos 3 Caracteres"
+		"O Nome Deve Conter Pelo Manos 3 Caracteres",
 	);
 	contract.isEmail(req.body.email, "E-mail Inválido");
 	contract.hasMinLen(
 		req.body.password,
 		8,
-		"A Senha Deve Conter Pelo Manos 8 Caracteres"
+		"A Senha Deve Conter Pelo Manos 8 Caracteres",
 	);
 
-	// Se os dados forem inválidos
 	if (!contract.isValid()) {
 		res.status(400).send(contract.errors()).end();
 		return;
-	};
+	}
 
 	try {
-		//Se o usuário já existir
 		const existingUser = await repository.getByEmailExist(req.body.email);
 		if (existingUser) {
-			res.status(409).send({
-				message: "Já Existe Um Usuário Com Esse E-mail",
-			});
+			res.status(409).send({ message: "Já Existe Um Usuário Com Esse E-mail" });
 			return;
-		};
+		}
+
+		// Upload de Avatar se enviado no cadastro
+		let avatar = undefined;
+		if (req.file) {
+			const { key, url } = await uploadToR2(req.file);
+			avatar = { url, key };
+		}
+
 		const salt = await bcryptjs.genSaltSync(10);
 		const hash = await bcryptjs.hash(req.body.password, salt);
+
 		await repository.create({
 			name: req.body.name,
 			email: req.body.email,
 			password: hash,
+			// Novos campos
+			avatar: avatar,
+			bio: req.body.bio,
+			phone: req.body.phone,
+			address: req.body.address,
+			socialMedia: req.body.socialMedia
+				? JSON.parse(req.body.socialMedia)
+				: undefined,
 		});
-		res.status(201).send({
-			message: "Cadastro Bem Sucedido!",
-		});
+
+		res.status(201).send({ message: "Cadastro Bem Sucedido!" });
 	} catch (e) {
 		console.log(e);
-		res.status(500).send({
-			message: "Erro Desconhecido Tente Novamente Mais Tarde"
-		});
+		res
+			.status(500)
+			.send({ message: "Erro Desconhecido Tente Novamente Mais Tarde" });
 	}
 };
 
@@ -80,7 +93,7 @@ exports.authenticate = async (req, res, next) => {
 	contract.hasMinLen(
 		req.body.password,
 		8,
-		"A Senha Deve Conter Pelo Manos 8 Caracteres"
+		"A Senha Deve Conter Pelo Manos 8 Caracteres",
 	);
 	console.log("AQUI");
 
@@ -107,7 +120,7 @@ exports.authenticate = async (req, res, next) => {
 			id: user._id,
 			email: user.email,
 			name: user.name,
-			role: user.role
+			role: user.role,
 		});
 
 		res.status(201).send({
@@ -117,7 +130,7 @@ exports.authenticate = async (req, res, next) => {
 				_id: user._id,
 				email: user.email,
 				name: user.name,
-				data: user.createDate
+				data: user.createDate,
 			},
 		});
 	} catch (e) {
@@ -163,16 +176,53 @@ exports.refreshToken = async (req, res, next) => {
 	}
 };
 
-exports.put = async (req, res, next) => {
+// Renomeado de put para update para padronizar
+exports.update = async (req, res, next) => {
 	try {
-		await repository.update(req.params.id, req.body);
-		res.status(200).send({
-			message: "Dados Alterados Com Sucesso!",
-		});
+		const id = req.params.id;
+		const currentUser = await repository.getById(id);
+
+		if (!currentUser) {
+			return res.status(404).send({ message: "Usuário não encontrado" });
+		}
+
+		let updateData = {
+			name: req.body.name,
+			email: req.body.email,
+			bio: req.body.bio,
+			phone: req.body.phone,
+			address: req.body.address,
+			socialMedia: req.body.socialMedia
+				? JSON.parse(req.body.socialMedia)
+				: undefined,
+		};
+
+		if (req.body.password) {
+			const salt = await bcryptjs.genSaltSync(10);
+			updateData.password = await bcryptjs.hash(req.body.password, salt);
+		}
+
+		// Upload Avatar
+		if (req.file) {
+			const { key, url } = await uploadToR2(req.file);
+			updateData.avatar = { url, key };
+
+			// Remover avatar antigo
+			if (currentUser.avatar && currentUser.avatar.key) {
+				await deleteFromR2(currentUser.avatar.key);
+			}
+		}
+
+		// Remove undefined
+		Object.keys(updateData).forEach(
+			(key) => updateData[key] === undefined && delete updateData[key],
+		);
+
+		await repository.update(id, updateData);
+		res.status(200).send({ message: "Dados Alterados Com Sucesso!" });
 	} catch (e) {
-		res.status(500).send({
-			message: "Falha Ao Alterar Dados!",
-		});
+		console.error(e);
+		res.status(500).send({ message: "Falha Ao Alterar Dados!" });
 	}
 };
 

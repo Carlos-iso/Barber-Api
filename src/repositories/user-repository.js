@@ -5,28 +5,28 @@ const User = mongoose.model("User");
 const bcryptjs = require("bcryptjs");
 
 exports.get = async () => {
-  const res = await User.find({}, "name email");
-  return res;
+	const res = await User.find({}, "name email");
+	return res;
 };
 
 exports.getById = async (id) => {
-  const res = await User.findById(id);
-  return res;
+	const res = await User.findById(id);
+	return res;
 };
 
 exports.getByEmailExist = async (email) => {
-  const user = await User.findOne({ email });
-  return user;
+	const user = await User.findOne({ email });
+	return user;
 };
 
 exports.create = async (data) => {
-  var user = await new User(data);
-  await user.save();
+	var user = await new User(data);
+	await user.save();
 };
 
 exports.authenticate = async (data) => {
 	const user = await User.findOne({
-		email: data.email
+		email: data.email,
 	});
 	if (!user) return "Usuário Não Encontrado!";
 	const isValidPassword = await bcryptjs.compare(data.password, user.password);
@@ -34,15 +34,11 @@ exports.authenticate = async (data) => {
 };
 
 exports.update = async (id, data) => {
-  await User.findByIdAndUpdate(id, {
-    $set: {
-      name: data.name,
-      email: data.email,
-      password: data.password
-    },
-  });
+	await User.findByIdAndUpdate(id, {
+		$set: data
+	});
 };
 
 exports.delete = async (id) => {
-  await User.findByIdAndRemove(id);
+	await User.findByIdAndRemove(id);
 };

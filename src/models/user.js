@@ -1,35 +1,56 @@
-'use strict';
-const mongoose = require('mongoose');
+"use strict";
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const schema = new Schema({
 	name: {
 		type: String,
-		required: [true, 'O nome é necessário'],
-		trim: true
+		required: [true, "O nome é necessário"],
+		trim: true,
 	},
 	email: {
 		type: String,
-		required: [true, 'O e-mail é necessário'],
+		required: [true, "O e-mail é necessário"],
 		unique: true,
 		lowercase: true,
-		trim: true
+		trim: true,
 	},
 	password: {
 		type: String,
-		required: [true, 'A senha é necessária'],
+		required: [true, "A senha é necessária"],
 	},
 	role: {
 		type: String,
-		enum: ['user', 'admin'],
-		default: 'user'
+		enum: ["user", "admin"],
+		default: "user",
+	},
+	avatar: {
+		url: { type: String },
+		key: { type: String },
+	},
+	bio: {
+		type: String,
+		trim: true,
+	},
+	phone: {
+		type: String,
+		trim: true,
+	},
+	address: {
+		type: String,
+		trim: true,
+	},
+	socialMedia: {
+		instagram: { type: String },
+		facebook: { type: String },
+		linkedin: { type: String },
 	},
 	active: {
 		type: Boolean,
-		default: true
+		default: true,
 	},
 	createdAt: {
 		type: Date,
-		default: Date.now
-	}
+		default: Date.now,
+	},
 });
-module.exports = mongoose.model('User', schema);
+module.exports = mongoose.model("User", schema);
