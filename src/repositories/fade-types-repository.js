@@ -4,32 +4,29 @@ const mongoose = require("mongoose");
 const FadeTypes = mongoose.model("FadeTypes");
 
 exports.get = async () => {
-    const fadeTypes = await FadeTypes.find({}, "user id label icon description defaultImage");
-    return fadeTypes;
+	return await FadeTypes.find({});
+};
+
+exports.getById = async (id) => {
+	return await FadeTypes.findById(id);
 };
 
 exports.getByLabel = async (label) => {
-    const fadeTypes = await FadeTypes.findOne({ label });
-    return fadeTypes;
+	return await FadeTypes.findOne({ label });
 };
 
 exports.create = async (data) => {
-    var fadeTypes = await new FadeTypes(data);
-    await fadeTypes.save();
+	const fadeTypes = new FadeTypes(data);
+	await fadeTypes.save();
+	return fadeTypes;
 };
 
 exports.update = async (id, data) => {
-    await FadeTypes.findByIdAndUpdate(id, {
-        $set: {
-            id: data.id,
-            label: data.label,
-            icon: data.icon,
-            description: data.description,
-            defaultImage: data.defaultImage
-        },
-    });
+	await FadeTypes.findByIdAndUpdate(id, {
+		$set: data,
+	});
 };
 
 exports.delete = async (id) => {
-    await FadeTypes.findByIdAndRemove(id);
+	return await FadeTypes.findByIdAndDelete(id);
 };

@@ -4,31 +4,29 @@ const mongoose = require("mongoose");
 const SideStyles = mongoose.model("SideStyles");
 
 exports.get = async () => {
-    const sideStyles = await SideStyles.find({}, "user id label icon defaultImage");
-    return sideStyles;
+	return await SideStyles.find({});
+};
+
+exports.getById = async (id) => {
+	return await SideStyles.findById(id);
 };
 
 exports.getByLabel = async (label) => {
-    const sideStyles = await SideStyles.findOne({ label });
-    return sideStyles;
+	return await SideStyles.findOne({ label });
 };
 
 exports.create = async (data) => {
-    const sideStyles = await new SideStyles(data);
-    await sideStyles.save();
+	const sideStyles = new SideStyles(data);
+	await sideStyles.save();
+	return sideStyles;
 };
 
 exports.update = async (id, data) => {
-    await SideStyles.findByIdAndUpdate(id, {
-        $set: {
-            id: data.id,
-            label: data.name,
-            icon: data.icon,
-            defaultImage: data.backgroundImage
-        },
-    });
+	await SideStyles.findByIdAndUpdate(id, {
+		$set: data,
+	});
 };
 
 exports.delete = async (id) => {
-    await SideStyles.findByIdAndRemove(id);
+	return await SideStyles.findByIdAndDelete(id);
 };

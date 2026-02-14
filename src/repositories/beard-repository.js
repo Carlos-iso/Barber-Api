@@ -4,32 +4,29 @@ const mongoose = require("mongoose");
 const BeardStyle = mongoose.model("BeardStyle");
 
 exports.get = async () => {
-    const beard = await BeardStyle.find({}, "user id name icon description defaultImage");
-    return beard;
+	return await BeardStyle.find({});
+};
+
+exports.getById = async (id) => {
+	return await BeardStyle.findById(id);
 };
 
 exports.getByName = async (name) => {
-    const beard = await BeardStyle.findOne({ name });
-    return beard;
+	return await BeardStyle.findOne({ name });
 };
 
 exports.create = async (data) => {
-    var beard = await new BeardStyle(data);
-    await beard.save();
+	const beard = new BeardStyle(data);
+	await beard.save();
+	return beard;
 };
 
 exports.update = async (id, data) => {
-    await BeardStyle.findByIdAndUpdate(id, {
-        $set: {
-            id: data.id,
-            name: data.name,
-            icon: data.icon,
-            description: data.description,
-            defaultImage: data.defaultImage
-        },
-    });
+	await BeardStyle.findByIdAndUpdate(id, {
+		$set: data,
+	});
 };
 
 exports.delete = async (id) => {
-    await BeardStyle.findByIdAndRemove(id);
+	return await BeardStyle.findByIdAndDelete(id);
 };

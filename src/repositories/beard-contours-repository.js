@@ -4,31 +4,33 @@ const mongoose = require("mongoose");
 const BeardContours = mongoose.model("BeardContours");
 
 exports.get = async () => {
-    const beardContours = await BeardContours.find({}, "user id label icon defaultImage");
-    return beardContours;
+	// Retorna todos os campos necessários
+	return await BeardContours.find({});
 };
 
+exports.getById = async (id) => {
+	return await BeardContours.findById(id);
+};
+
+// Mantido para compatibilidade, mas getById é preferível
 exports.getByLabel = async (label) => {
-    const beardContours = await BeardContours.findOne({ label });
-    return beardContours;
+	return await BeardContours.findOne({ label });
 };
 
 exports.create = async (data) => {
-    const beardContours = await new BeardContours(data);
-    await beardContours.save();
+	const beardContours = new BeardContours(data);
+	await beardContours.save();
+	return beardContours;
 };
 
 exports.update = async (id, data) => {
-    await BeardContours.findByIdAndUpdate(id, {
-        $set: {
-            id: data.id,
-            label: data.name,
-            icon: data.icon,
-            defaultImage: data.backgroundImage
-        },
-    });
+	// Atualização parcial respeitando os campos enviados
+	await BeardContours.findByIdAndUpdate(id, {
+		$set: data,
+	});
 };
 
 exports.delete = async (id) => {
-    await BeardContours.findByIdAndRemove(id);
+	// Retorna o documento deletado para que o controller possa limpar a imagem
+	return await BeardContours.findByIdAndDelete(id);
 };

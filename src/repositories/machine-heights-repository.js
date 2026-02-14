@@ -4,31 +4,29 @@ const mongoose = require("mongoose");
 const MachineHeights = mongoose.model("MachineHeights");
 
 exports.get = async () => {
-    const machineHeights = await MachineHeights.find({}, "user id label icon defaultImage");
-    return machineHeights;
+	return await MachineHeights.find({});
+};
+
+exports.getById = async (id) => {
+	return await MachineHeights.findById(id);
 };
 
 exports.getByLabel = async (label) => {
-    const machineHeights = await MachineHeights.findOne({ label });
-    return machineHeights;
+	return await MachineHeights.findOne({ label });
 };
 
 exports.create = async (data) => {
-    const machineHeights = await new MachineHeights(data);
-    await machineHeights.save();
+	const machineHeights = new MachineHeights(data);
+	await machineHeights.save();
+	return machineHeights;
 };
 
 exports.update = async (id, data) => {
-    await MachineHeights.findByIdAndUpdate(id, {
-        $set: {
-            id: data.id,
-            label: data.name,
-            icon: data.icon,
-            defaultImage: data.backgroundImage
-        },
-    });
+	await MachineHeights.findByIdAndUpdate(id, {
+		$set: data,
+	});
 };
 
 exports.delete = async (id) => {
-    await MachineHeights.findByIdAndRemove(id);
+	return await MachineHeights.findByIdAndDelete(id);
 };

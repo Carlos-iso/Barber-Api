@@ -4,31 +4,29 @@ const mongoose = require("mongoose");
 const BeardHeights = mongoose.model("BeardHeights");
 
 exports.get = async () => {
-    const beardHeights = await BeardHeights.find({}, "user id label icon defaultImage");
-    return beardHeights;
+	return await BeardHeights.find({});
+};
+
+exports.getById = async (id) => {
+	return await BeardHeights.findById(id);
 };
 
 exports.getByLabel = async (label) => {
-    const beardHeights = await BeardHeights.findOne({ label });
-    return beardHeights;
+	return await BeardHeights.findOne({ label });
 };
 
 exports.create = async (data) => {
-    const beardHeights = await new BeardHeights(data);
-    await beardHeights.save();
+	const beardHeights = new BeardHeights(data);
+	await beardHeights.save();
+	return beardHeights;
 };
 
 exports.update = async (id, data) => {
-    await BeardHeights.findByIdAndUpdate(id, {
-        $set: {
-            id: data.id,
-            label: data.name,
-            icon: data.icon,
-            defaultImage: data.backgroundImage
-        },
-    });
+	await BeardHeights.findByIdAndUpdate(id, {
+		$set: data,
+	});
 };
 
 exports.delete = async (id) => {
-    await BeardHeights.findByIdAndRemove(id);
+	return await BeardHeights.findByIdAndDelete(id);
 };

@@ -10,15 +10,6 @@ const dotenv = require("dotenv").config();
 const app = express();
 const router = express.Router();
 
-// const dns = require("dns");
-// // Tenta forçar o uso do DNS do Google para evitar erros de querySrv
-// try {
-// 	dns.setServers(["8.8.8.8", "8.8.4.4"]);
-// 	console.log("DNS configurado para 8.8.8.8");
-// } catch (e) {
-// 	console.log("Erro ao configurar DNS:", e.message);
-// }
-
 //Conectar ao banco mongodb
 mongoose.connect(config.connectionString);
 

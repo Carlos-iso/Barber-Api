@@ -4,31 +4,29 @@ const mongoose = require("mongoose");
 const FinishStyles = mongoose.model("FinishStyles");
 
 exports.get = async () => {
-    const finishStyles = await FinishStyles.find({}, "user id label icon defaultImage");
-    return finishStyles;
+	return await FinishStyles.find({});
+};
+
+exports.getById = async (id) => {
+	return await FinishStyles.findById(id);
 };
 
 exports.getByLabel = async (label) => {
-    const finishStyles = await FinishStyles.findOne({ label });
-    return finishStyles;
+	return await FinishStyles.findOne({ label });
 };
 
 exports.create = async (data) => {
-    const finishStyles = await new FinishStyles(data);
-    await finishStyles.save();
+	const finishStyles = new FinishStyles(data);
+	await finishStyles.save();
+	return finishStyles;
 };
 
 exports.update = async (id, data) => {
-    await FinishStyles.findByIdAndUpdate(id, {
-        $set: {
-            id: data.id,
-            label: data.name,
-            icon: data.icon,
-            defaultImage: data.backgroundImage
-        },
-    });
+	await FinishStyles.findByIdAndUpdate(id, {
+		$set: data,
+	});
 };
 
 exports.delete = async (id) => {
-    await FinishStyles.findByIdAndRemove(id);
+	return await FinishStyles.findByIdAndDelete(id);
 };

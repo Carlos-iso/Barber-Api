@@ -3,14 +3,22 @@ const express = require("express");
 const router = express.Router();
 const upload = require("../services/multer.js");
 const controller = require("../controllers/beard-heights-controller.js");
-const authService = require("../services/auth-service.js"); // Apenas usuários autenticados podem criar, atualizar ou deletar anúncios
+const authService = require("../services/auth-service.js");
+
+// Public Routes
 router.get("/", controller.listUploads);
+router.get("/:id", controller.getById);
 router.post("/search", controller.getByName);
+
+// Protected Routes
 router.post(
-    "/:adminId/new",
-    upload.single("defaultImage"),
-    controller.uploadFile
+	"/:adminId/new",
+	upload.single("defaultImage"),
+	controller.uploadFile,
 );
-// router.put("/:id/update", upload.single("defaultImage"), controller.updatePut);
-// router.delete("/:id/delete", controller.remove);
+
+router.put("/:id", upload.single("defaultImage"), controller.update);
+
+router.delete("/:id", controller.delete);
+
 module.exports = router;

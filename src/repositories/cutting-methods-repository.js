@@ -1,34 +1,31 @@
 "use strict";
-
 const mongoose = require("mongoose");
 const CuttingMethods = mongoose.model("CuttingMethods");
 
 exports.get = async () => {
-    const cuttingMethods = await CuttingMethods.find({}, "user id label icon backgroundImage");
-    return cuttingMethods;
+	return await CuttingMethods.find({});
+};
+
+exports.getById = async (id) => {
+	return await CuttingMethods.findById(id);
 };
 
 exports.getByLabel = async (label) => {
-    const cuttingMethods = await CuttingMethods.findOne({ label });
-    return cuttingMethods;
+	return await CuttingMethods.findOne({ label });
 };
 
 exports.create = async (data) => {
-    const cuttingMethods = await new CuttingMethods(data);
-    await cuttingMethods.save();
+	const cuttingMethods = new CuttingMethods(data);
+	await cuttingMethods.save();
+	return cuttingMethods;
 };
 
 exports.update = async (id, data) => {
-    await CuttingMethods.findByIdAndUpdate(id, {
-        $set: {
-            id: data.id,
-            label: data.name,
-            icon: data.icon,
-            backgroundImage: data.backgroundImage
-        },
-    });
+	await CuttingMethods.findByIdAndUpdate(id, {
+		$set: data,
+	});
 };
 
 exports.delete = async (id) => {
-    await CuttingMethods.findByIdAndRemove(id);
+	return await CuttingMethods.findByIdAndDelete(id);
 };

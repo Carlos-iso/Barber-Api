@@ -6,8 +6,9 @@
 	"scripts": {
 		"start": "node ./bin/server.js",
 		"dev": "nodemon ./bin/server.js",
+		"test": "jest",
 		"pull": "git pull origin main && npm install",
-		"push": "git status && git add . && git commit -m 'fix:_POST_GET_OK_TEST_AG' && git push origin main",
+		"push": "git status && git add . && git commit -m 'fix:_API_TESTS_OK' && git push origin main",
 		"generate-key": "node -e \"console.log(require('crypto').randomBytes(32).toString('hex'))\""
 	},
 	"keywords": [],
@@ -30,6 +31,8 @@
 		"multer": "^2.0.2"
 	},
 	"devDependencies": {
-		"nodemon": "^3.1.11"
+		"jest": "^30.2.0",
+		"nodemon": "^3.1.11",
+		"supertest": "^7.2.2"
 	}
 }
