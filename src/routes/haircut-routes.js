@@ -10,12 +10,8 @@ router.get("/", controller.listUploads);
 router.get("/:id", controller.getById);
 router.post("/search", controller.getByName);
 
-// Protected Routes
-router.post(
-	"/:adminId/new",
-	upload.single("defaultImage"),
-	controller.uploadFile,
-);
+// Protected Routes - Criar corte
+router.post("/", upload.single("defaultImage"), controller.uploadFile);
 
 router.put("/:id", upload.single("defaultImage"), controller.update);
 

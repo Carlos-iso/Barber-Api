@@ -25,6 +25,7 @@ const FinishStyles = require("../models/finish-styles");
 const BeardHeights = require("../models/beard-heights");
 const BeardContours = require("../models/beard-contours");
 const FadeTypes = require("../models/fade-types");
+const ServiceOrder = require("../models/service-order");
 
 //Carregar Rotas
 const indexRoutes = require("../routes/index-routes");
@@ -39,6 +40,7 @@ const finishStylesRoutes = require("../routes/finish-styles-routes");
 const beardHeightsRoutes = require("../routes/beard-heights-routes");
 const beardContoursRoutes = require("../routes/beard-contours-routes");
 const fadeTypesRoutes = require("../routes/fade-types-routes");
+const serviceOrderRoutes = require("../routes/service-order-routes");
 
 //Chama As Variaveis De Ambiente
 const urlHome = process.env.URL_HOME;
@@ -50,7 +52,7 @@ app.use(function (req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header(
 		"Access-Control-Allow-Headers",
-		"*Origen, X-Requested-With, Content-Type, Accept, x-access-token",
+		"Origin, X-Requested-With, Content-Type, Accept, x-access-token",
 	);
 	res.header(
 		"Access-Control-Allow-Methods",
@@ -72,9 +74,9 @@ app.use(
 );
 
 app.use("/", indexRoutes);
-app.use("/user", userRoutes);
-app.use("/haircut", haircutRoutes);
-app.use("/beard", beardRoutes);
+app.use("/users", userRoutes);
+app.use("/haircuts", haircutRoutes);
+app.use("/beards", beardRoutes);
 app.use("/cutting-methods", cuttingMethodsRoutes);
 app.use("/machine-heights", machineHeightsRoutes);
 app.use("/scissor-heights", scissorHeightsRoutes);
@@ -83,5 +85,6 @@ app.use("/finish-styles", finishStylesRoutes);
 app.use("/beard-heights", beardHeightsRoutes);
 app.use("/beard-contours", beardContoursRoutes);
 app.use("/fade-types", fadeTypesRoutes);
+app.use("/service-orders", serviceOrderRoutes);
 
 module.exports = app;

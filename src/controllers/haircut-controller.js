@@ -29,7 +29,7 @@ exports.uploadFile = async (req, res) => {
 		} catch (e) {}
 
 		const upload = {
-			user: req.params.adminId,
+			// user: req.params.adminId, // Removido - não é necessário
 			id: req.body.id,
 			name: req.body.name, // Haircut usa 'name', BeardContours usava 'label'
 			description: req.body.description, // Campo extra de haircut

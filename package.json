@@ -8,7 +8,7 @@
 		"dev": "nodemon ./bin/server.js",
 		"test": "jest",
 		"pull": "git pull origin main && npm install",
-		"push": "git status && git add . && git commit -m 'fix:_Init_Inplement_Front' && git push origin main",
+		"push": "git status && git add . && git commit -m 'fix:_Init_Inplement_Front2' && git push origin main",
 		"generate-key": "node -e \"console.log(require('crypto').randomBytes(32).toString('hex'))\""
 	},
 	"keywords": [],
