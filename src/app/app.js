@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const config = require("./config");
 const dotenv = require("dotenv").config();
+const authService = require("../services/auth-service");
 
 const app = express();
 const router = express.Router();

@@ -64,11 +64,10 @@ exports.post = async (req, res, next) => {
 		const salt = await bcryptjs.genSaltSync(10);
 		const hash = await bcryptjs.hash(req.body.password, salt);
 
-		await repository.create({
+		const userData = {
 			name: req.body.name,
 			email: req.body.email,
 			password: hash,
-			// Novos campos
 			avatar: avatar,
 			bio: req.body.bio,
 			phone: req.body.phone,
@@ -76,9 +75,22 @@ exports.post = async (req, res, next) => {
 			socialMedia: req.body.socialMedia
 				? JSON.parse(req.body.socialMedia)
 				: undefined,
+		};
+		const createdUser = await repository.create(userData);
+		const token = await authService.generateToken({
+			id: createdUser._id,
+			email: createdUser.email,
+			name: createdUser.name,
 		});
-
-		res.status(201).send({ message: "Cadastro Bem Sucedido!" });
+		res.status(201).send({
+			token: token,
+			user: {
+				id: createdUser._id,
+				_id: createdUser._id,
+				email: createdUser.email,
+				name: createdUser.name,
+			},
+		});
 	} catch (e) {
 		console.log(e);
 		res
@@ -124,13 +136,13 @@ exports.authenticate = async (req, res, next) => {
 		});
 
 		res.status(201).send({
-			message: "Login Bem Sucedido!",
 			token: token,
-			data: {
+			user: {
+				id: user._id,
 				_id: user._id,
 				email: user.email,
 				name: user.name,
-				data: user.createDate,
+				createDate: user.createDate,
 			},
 		});
 	} catch (e) {
