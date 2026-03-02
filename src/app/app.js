@@ -42,6 +42,7 @@ const beardHeightsRoutes = require("../routes/beard-heights-routes");
 const beardContoursRoutes = require("../routes/beard-contours-routes");
 const fadeTypesRoutes = require("../routes/fade-types-routes");
 const serviceOrderRoutes = require("../routes/service-order-routes");
+const mediaRoutes = require("../routes/media-routes");
 
 //Chama As Variaveis De Ambiente
 const urlHome = process.env.URL_HOME;
@@ -87,5 +88,6 @@ app.use("/beard-heights", beardHeightsRoutes);
 app.use("/beard-contours", beardContoursRoutes);
 app.use("/fade-types", fadeTypesRoutes);
 app.use("/service-orders", serviceOrderRoutes);
+app.use("/media", mediaRoutes);
 
 module.exports = app;

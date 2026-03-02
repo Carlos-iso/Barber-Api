@@ -11,10 +11,16 @@ router.get("/:id", controller.getById);
 router.post("/search", controller.getByName);
 
 // Protected Routes - Criar corte
-router.post("/", upload.single("defaultImage"), controller.uploadFile);
+router.post(
+	"/",
+	authService.authorize,
+	upload.single("defaultImage"),
+	controller.uploadFile,
+);
+router.post("/:adminId/new", upload.single("defaultImage"), controller.uploadFile);
 
-router.put("/:id", upload.single("defaultImage"), controller.update);
+router.put("/:id", authService.authorize, upload.single("defaultImage"), controller.update);
 
-router.delete("/:id", controller.delete);
+router.delete("/:id", authService.authorize, controller.delete);
 
 module.exports = router;

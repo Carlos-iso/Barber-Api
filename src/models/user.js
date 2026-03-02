@@ -20,7 +20,7 @@ const schema = new Schema({
 	},
 	role: {
 		type: String,
-		enum: ["user", "admin"],
+		enum: ["user", "barber", "admin"],
 		default: "user",
 	},
 	avatar: {
@@ -47,6 +47,11 @@ const schema = new Schema({
 	active: {
 		type: Boolean,
 		default: true,
+	},
+	attendanceCount: {
+		type: Number,
+		default: 0,
+		min: 0,
 	},
 	createdAt: {
 		type: Date,

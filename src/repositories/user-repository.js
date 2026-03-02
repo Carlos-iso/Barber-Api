@@ -22,6 +22,7 @@ exports.getByEmailExist = async (email) => {
 exports.create = async (data) => {
 	var user = await new User(data);
 	await user.save();
+	return user;
 };
 
 exports.authenticate = async (data) => {
@@ -36,6 +37,12 @@ exports.authenticate = async (data) => {
 exports.update = async (id, data) => {
 	await User.findByIdAndUpdate(id, {
 		$set: data
+	});
+};
+
+exports.incrementAttendanceCount = async (id) => {
+	await User.findByIdAndUpdate(id, {
+		$inc: { attendanceCount: 1 },
 	});
 };
 

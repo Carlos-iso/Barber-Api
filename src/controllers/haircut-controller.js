@@ -29,7 +29,7 @@ exports.uploadFile = async (req, res) => {
 		} catch (e) {}
 
 		const upload = {
-			// user: req.params.adminId, // Removido - não é necessário
+			user: req.params.adminId || req.user?.id,
 			id: req.body.id,
 			name: req.body.name, // Haircut usa 'name', BeardContours usava 'label'
 			description: req.body.description, // Campo extra de haircut
@@ -40,6 +40,12 @@ exports.uploadFile = async (req, res) => {
 				key: key,
 			},
 		};
+
+		if (!upload.user) {
+			return res.status(400).send({
+				message: "Necessário vincular o corte a um admin (user/adminId ausente)",
+			});
+		}
 
 		const data = await repository.create(upload);
 		res.status(201).send({ message: "Upload criado!", upload: data });

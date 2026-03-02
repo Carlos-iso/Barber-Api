@@ -12,7 +12,10 @@ exports.decodeToken = async token => {
   return data;
 };
 exports.authorize = function (req, res, next) {
-  var token = req.body.token || req.query.token || req.headers["x-access-token"];
+  const bearerToken = req.headers.authorization && req.headers.authorization.startsWith("Bearer ")
+    ? req.headers.authorization.slice(7)
+    : null;
+  var token = req.body.token || req.query.token || req.headers["x-access-token"] || bearerToken;
   if (!token) {
     res.status(401).json({
       message: "Restricted Access"
@@ -24,12 +27,11 @@ exports.authorize = function (req, res, next) {
           message: "Token Invalido"
         });
       } else {
+        req.user = decoded;
         next();
       }
     });
   }
-  const data = jwt.verify(token, jwtSecret);
-  return data;
 };
 exports.refreshTokenMiddleware = function (req, res, next) {
   const token =

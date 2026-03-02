@@ -2,6 +2,7 @@
 
 const repository = require("../repositories/service-order-repository");
 const ValidationContract = require("../validators/fluent-validator");
+const userRepository = require("../repositories/user-repository");
 
 exports.post = async (req, res, next) => {
 	let contract = new ValidationContract();
@@ -23,7 +24,7 @@ exports.post = async (req, res, next) => {
 		// Se o middleware salvar em req.user.id
 		const barberId = req.user.id || req.user._id || req.body.barberId;
 
-		await repository.create({
+		const createdOrder = await repository.create({
 			customerName: req.body.customerName,
 			date: req.body.date,
 			status: req.body.status,
@@ -31,7 +32,15 @@ exports.post = async (req, res, next) => {
 			barberId: barberId,
 			services: req.body.services, // Espera array de objetos { name, price }
 		});
-		res.status(201).send({ message: "Ordem de Serviço criada com sucesso!" });
+
+		if (barberId) {
+			await userRepository.incrementAttendanceCount(barberId);
+		}
+
+		res.status(201).send({
+			message: "Ordem de Serviço criada com sucesso!",
+			data: createdOrder,
+		});
 	} catch (e) {
 		console.log(e);
 		res.status(500).send({ message: "Falha ao processar sua requisição" });

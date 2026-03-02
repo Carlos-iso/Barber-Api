@@ -81,6 +81,7 @@ exports.post = async (req, res, next) => {
 			id: createdUser._id,
 			email: createdUser.email,
 			name: createdUser.name,
+			role: createdUser.role,
 		});
 		res.status(201).send({
 			token: token,
@@ -89,6 +90,7 @@ exports.post = async (req, res, next) => {
 				_id: createdUser._id,
 				email: createdUser.email,
 				name: createdUser.name,
+				role: createdUser.role,
 			},
 		});
 	} catch (e) {
@@ -143,6 +145,7 @@ exports.authenticate = async (req, res, next) => {
 				email: user.email,
 				name: user.name,
 				createDate: user.createDate,
+				role: user.role,
 			},
 		});
 	} catch (e) {
