@@ -11,7 +11,13 @@ exports.post = async (req, res, next) => {
 		3,
 		"O nome do cliente deve ter pelo menos 3 caracteres",
 	);
-	contract.isRequired(req.body.totalPrice, "O preço total é obrigatório");
+	const hasTotalPrice =
+		req.body.totalPrice !== undefined &&
+		req.body.totalPrice !== null &&
+		!Number.isNaN(Number(req.body.totalPrice));
+	if (!hasTotalPrice) {
+		contract.errors().push({ message: "O preço total é obrigatório" });
+	}
 
 	if (!contract.isValid()) {
 		res.status(400).send(contract.errors()).end();
@@ -28,7 +34,7 @@ exports.post = async (req, res, next) => {
 			customerName: req.body.customerName,
 			date: req.body.date,
 			status: req.body.status,
-			totalPrice: req.body.totalPrice,
+			totalPrice: Number(req.body.totalPrice),
 			barberId: barberId,
 			services: req.body.services, // Espera array de objetos { name, price }
 		});

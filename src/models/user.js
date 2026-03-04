@@ -19,9 +19,19 @@ const schema = new Schema({
 		required: [true, "A senha é necessária"],
 	},
 	role: {
-		type: String,
+		type: [String],
 		enum: ["user", "barber", "admin"],
-		default: "user",
+		default: ["user"],
+		validate: {
+			validator: function (roles) {
+				if (!Array.isArray(roles) || roles.length === 0) return false;
+				if (!roles.includes("user")) return false;
+				if (roles.includes("barber") && roles.includes("admin")) return false;
+				return true;
+			},
+			message:
+				"Role inválida: use ['user'] ou ['user','barber'] ou ['user','admin']",
+		},
 	},
 	avatar: {
 		url: { type: String },

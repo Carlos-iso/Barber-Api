@@ -6,6 +6,65 @@ const bcryptjs = require("bcryptjs");
 const authService = require("../services/auth-service");
 const { uploadToR2, deleteFromR2 } = require("../services/upload-service");
 
+function parseRoleInput(rawRole) {
+	if (!rawRole) return undefined;
+	if (Array.isArray(rawRole)) return rawRole;
+	if (typeof rawRole === "string") {
+		try {
+			const parsed = JSON.parse(rawRole);
+			if (Array.isArray(parsed)) return parsed;
+		} catch (_error) {
+			return [rawRole];
+		}
+	}
+	return undefined;
+}
+
+function normalizeRoles(rawRole) {
+	const roles = parseRoleInput(rawRole) || ["user"];
+	const normalized = new Set(["user"]);
+
+	if (roles.includes("admin")) {
+		normalized.add("admin");
+		return ["user", "admin"];
+	}
+
+	if (roles.includes("barber")) {
+		normalized.add("barber");
+		return ["user", "barber"];
+	}
+
+	return Array.from(normalized);
+}
+
+function getUserRole(user) {
+	return normalizeRoles(user?.role);
+}
+
+function getAttendanceCount(user) {
+	return typeof user?.attendanceCount === "number" ? user.attendanceCount : 0;
+}
+
+async function patchLegacyProfile(user) {
+	if (!user || !user._id) return user;
+
+	const normalizedRole = normalizeRoles(user.role);
+	const normalizedAttendanceCount = getAttendanceCount(user);
+	const shouldUpdateRole = JSON.stringify(user.role) !== JSON.stringify(normalizedRole);
+	const shouldUpdateAttendanceCount = user.attendanceCount !== normalizedAttendanceCount;
+
+	if (shouldUpdateRole || shouldUpdateAttendanceCount) {
+		await repository.update(user._id, {
+			role: normalizedRole,
+			attendanceCount: normalizedAttendanceCount,
+		});
+		user.role = normalizedRole;
+		user.attendanceCount = normalizedAttendanceCount;
+	}
+
+	return user;
+}
+
 exports.get = async (req, res, next) => {
 	try {
 		var data = await repository.get();
@@ -20,6 +79,7 @@ exports.get = async (req, res, next) => {
 exports.getById = async (req, res, next) => {
 	try {
 		var data = await repository.getById(req.params.id);
+		await patchLegacyProfile(data);
 		res.status(200).send(data);
 	} catch (e) {
 		res.status(500).send({
@@ -68,6 +128,7 @@ exports.post = async (req, res, next) => {
 			name: req.body.name,
 			email: req.body.email,
 			password: hash,
+			role: normalizeRoles(req.body.role),
 			avatar: avatar,
 			bio: req.body.bio,
 			phone: req.body.phone,
@@ -81,7 +142,7 @@ exports.post = async (req, res, next) => {
 			id: createdUser._id,
 			email: createdUser.email,
 			name: createdUser.name,
-			role: createdUser.role,
+			role: getUserRole(createdUser),
 		});
 		res.status(201).send({
 			token: token,
@@ -90,7 +151,8 @@ exports.post = async (req, res, next) => {
 				_id: createdUser._id,
 				email: createdUser.email,
 				name: createdUser.name,
-				role: createdUser.role,
+				role: getUserRole(createdUser),
+				attendanceCount: getAttendanceCount(createdUser),
 			},
 		});
 	} catch (e) {
@@ -130,11 +192,13 @@ exports.authenticate = async (req, res, next) => {
 			return;
 		}
 
+		await patchLegacyProfile(user);
+
 		const token = await authService.generateToken({
 			id: user._id,
 			email: user.email,
 			name: user.name,
-			role: user.role,
+			role: getUserRole(user),
 		});
 
 		res.status(201).send({
@@ -145,7 +209,8 @@ exports.authenticate = async (req, res, next) => {
 				email: user.email,
 				name: user.name,
 				createDate: user.createDate,
-				role: user.role,
+				role: getUserRole(user),
+				attendanceCount: getAttendanceCount(user),
 			},
 		});
 	} catch (e) {
@@ -170,11 +235,13 @@ exports.refreshToken = async (req, res, next) => {
 			return;
 		}
 
+		await patchLegacyProfile(user);
+
 		const tokenData = await authService.generateToken({
 			id: user._id,
 			email: user.email,
 			name: user.name,
-			role: user.role,
+			role: getUserRole(user),
 		});
 
 		res.status(201).send({
@@ -182,6 +249,8 @@ exports.refreshToken = async (req, res, next) => {
 			data: {
 				email: user.email,
 				name: user.name,
+				role: getUserRole(user),
+				attendanceCount: getAttendanceCount(user),
 			},
 		});
 	} catch (e) {
@@ -204,6 +273,12 @@ exports.update = async (req, res, next) => {
 		let updateData = {
 			name: req.body.name,
 			email: req.body.email,
+			role: req.body.role ? normalizeRoles(req.body.role) : undefined,
+			attendanceCount: (() => {
+				if (req.body.attendanceCount === undefined) return undefined;
+				const parsed = Number(req.body.attendanceCount);
+				return Number.isNaN(parsed) ? undefined : parsed;
+			})(),
 			bio: req.body.bio,
 			phone: req.body.phone,
 			address: req.body.address,

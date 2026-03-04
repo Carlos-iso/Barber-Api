@@ -48,4 +48,24 @@ describe("Service Order Controller", () => {
 		expect(repository.get).toHaveBeenCalledWith("barber123");
 		expect(res.status).toHaveBeenCalledWith(200);
 	});
+
+	it("should accept totalPrice zero", async () => {
+		req.body = {
+			customerName: "Customer",
+			totalPrice: 0,
+			date: new Date(),
+			status: "pending",
+			services: [{ name: "Cut", price: 0 }],
+		};
+		repository.create.mockResolvedValue({});
+
+		await controller.post(req, res);
+
+		expect(repository.create).toHaveBeenCalledWith(
+			expect.objectContaining({
+				totalPrice: 0,
+			}),
+		);
+		expect(res.status).toHaveBeenCalledWith(201);
+	});
 });
